@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Amitesh Anirudhan, Senior Consultant in Oracle ORMB/OUAF and data engineering, based in Hyderabad.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%239E2369' d='M24 4l3 14 15 8v4l-15-4-1 10 5 4v3l-7-2-7 2v-3l5-4-1-10-15 4v-4l15-8z'/%3E%3C/svg%3E">
+<title>Amitesh Anirudhan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an aeronautical chart page. Hero = name + ATC flight strip beside a VOR compass rose; then flight log, type ratings, flight plans, off duty, contact. */
+:root{
+  --paper:#EDF2F1; --surface:#F8FAF9; --ink:#14212B; --muted:#55646D; --rule:#C3CFD1;
+  --magenta:#9E2369; --blue:#1C5794; --amber:#9A6A00;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1319; --surface:#141C24; --ink:#E2E8EA; --muted:#8D9BA4; --rule:#27333D;
+  --magenta:#E26AAC; --blue:#72A9E2; --amber:#E0A93A; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0D1319; --surface:#141C24; --ink:#E2E8EA; --muted:#8D9BA4; --rule:#27333D;
+  --magenta:#E26AAC; --blue:#72A9E2; --amber:#E0A93A; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:16px/1.6 var(--body);padding-inline:20px;padding-block:0 48px;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:96px 96px;background-position:-1px -1px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;background:var(--paper);opacity:.82;pointer-events:none;z-index:-1}
+.wrap{max-width:1040px;margin:0 auto;position:relative}
+a{color:var(--blue)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--magenta);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+.label{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--mono)}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-block:20px;border-bottom:1px solid var(--rule)}
+.top nav{display:flex;gap:18px;flex-wrap:wrap}
+.top nav a{font:500 13px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.top nav a:hover{color:var(--magenta)}
+.clock{font:500 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px 40px}
+.hero h1{font-size:clamp(56px,10vw,112px);font-weight:700;letter-spacing:-.01em;text-transform:uppercase}
+.role{font:600 clamp(20px,2.6vw,26px)/1.25 var(--display);letter-spacing:.02em;margin:14px 0 18px;color:var(--blue);text-transform:uppercase}
+.lede{max-width:58ch;margin:0;color:var(--ink)}
+.rose{width:100%;max-width:360px;justify-self:center;aspect-ratio:1}
+.rose svg{width:100%;height:100%;display:block}
+
+/* flight strip */
+.strip{margin-top:28px;display:grid;grid-template-columns:auto repeat(4,minmax(0,1fr));border:1.5px solid var(--ink);background:var(--surface);font-family:var(--mono);font-size:13px}
+.strip>div{padding:10px 12px;border-left:1px solid var(--rule);min-width:0}
+.strip>div:first-child{border-left:0;background:var(--magenta);color:var(--surface);display:flex;flex-direction:column;justify-content:center}
+.strip b{display:block;font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip small{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.strip>div:first-child small{color:inherit;opacity:.8}
+
+/* sections */
+section{padding-block:56px;border-top:1px solid var(--rule)}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.sec-head h2{font-size:clamp(34px,5vw,48px);font-weight:700;text-transform:uppercase}
+.sec-head p{margin:0;color:var(--muted);max-width:46ch}
+
+/* flight log */
+.log{display:grid;gap:0;border-top:1.5px solid var(--ink)}
+.leg{display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:24px;padding-block:22px;border-bottom:1px solid var(--rule)}
+.leg .when{font:500 13px/1.5 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.leg h3{font-size:28px;font-weight:600;text-transform:uppercase}
+.leg .org{font-weight:600;color:var(--blue);margin:2px 0 10px}
+.leg ul{margin:0;padding-left:18px;display:grid;gap:4px;max-width:64ch}
+.leg li::marker{color:var(--magenta)}
+.block{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.block b{display:block;font-size:22px;font-weight:500}
+.total{display:flex;justify-content:flex-end;gap:12px;align-items:baseline;padding-top:14px;font-family:var(--mono)}
+.total b{font-size:22px;font-weight:500;color:var(--magenta);font-variant-numeric:tabular-nums}
+
+/* ratings */
+.ratings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.rating{background:var(--surface);border:1px solid var(--rule);padding:22px}
+.rating h3{font-size:24px;font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.rating .label{margin-bottom:14px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 12.5px var(--mono);padding:4px 9px;border:1px solid var(--rule);background:var(--paper);white-space:nowrap}
+.cert{margin-top:20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:16px 20px;border:1.5px dashed var(--magenta)}
+.cert b{font-family:var(--display);font-size:22px;text-transform:uppercase;font-weight:600}
+
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.plan{background:var(--surface);border:1px solid var(--rule);display:flex;flex-direction:column}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:6px}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.status.air{color:var(--amber)}
+.status.land{color:var(--blue)}
+.plan-body{padding:18px 16px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.plan h3{font-size:26px;font-weight:600;text-transform:uppercase}
+.plan p{margin:0}
+.route{font:12.5px/1.7 var(--mono);color:var(--magenta);margin-top:auto;padding-top:6px;word-break:break-word}
+.plan.wide{grid-column:1/-1}
+
+/* off duty */
+.duty{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.duty h3{font-size:24px;font-weight:600;text-transform:uppercase;margin:8px 0 6px}
+.duty p{margin:0;color:var(--ink)}
+.duty .ico{width:44px;height:44px;color:var(--magenta)}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end}
+.contact h2{font-size:clamp(40px,7vw,72px);font-weight:700;text-transform:uppercase}
+.freq{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.freq code{font:500 clamp(15px,2.2vw,19px) var(--mono);padding:10px 14px;border:1.5px solid var(--ink);background:var(--surface);word-break:break-all;user-select:all}
+button{font:600 14px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:12px 16px;border:0;background:var(--magenta);color:var(--surface);cursor:pointer}
+button:hover{filter:brightness(1.1)}
+.ctable{font:13px/1.9 var(--mono);color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.ctable b{color:var(--ink);font-weight:500}
+footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);color:var(--muted);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;padding-block:36px 24px}
+  .rose{max-width:260px;grid-row:1}
+  .ratings,.duty{grid-template-columns:1fr}
+  .plans{grid-template-columns:1fr}
+  .leg{grid-template-columns:1fr;gap:8px}
+  .block{text-align:left;display:flex;gap:10px;align-items:baseline}
+  .contact{grid-template-columns:1fr}
+  .ctable{text-align:left}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .strip>div{border-top:1px solid var(--rule)}
+  .strip>div:first-child{grid-column:1/-1;border-top:0}
+  .strip>div:nth-child(2n){border-left:0}
+}
+/* ---------- Motion ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--magenta);transform-origin:0 50%;transform:scaleX(0);z-index:10}
+.top nav a{position:relative}
+.top nav a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1.5px;background:var(--magenta);transform:scaleX(0);transform-origin:0 50%}
+.top nav a.on{color:var(--magenta)}
+.top nav a.on::after,.top nav a:hover::after{transform:scaleX(1)}
+
+@media (prefers-reduced-motion:no-preference){
+  html{scroll-behavior:smooth}
+  :root{--ease:cubic-bezier(.2,.8,.2,1)}
+  .top nav a::after{transition:transform .35s var(--ease)}
+
+  /* load sequence: name rises out of a clip, then role, lede, strip cells */
+  .hero h1 .ln{display:block;overflow:hidden}
+  .hero h1 .ln>span{display:block;animation:rise .9s var(--ease) both}
+  .hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
+  .hero .label,.role,.lede{animation:fadeUp .8s var(--ease) both}
+  .hero .label{animation-delay:0s}.role{animation-delay:.3s}.lede{animation-delay:.42s}
+  .strip>div{animation:stripIn .6s var(--ease) both}
+  .strip>div:nth-child(1){animation-delay:.55s}.strip>div:nth-child(2){animation-delay:.63s}
+  .strip>div:nth-child(3){animation-delay:.71s}.strip>div:nth-child(4){animation-delay:.79s}
+  .strip>div:nth-child(5){animation-delay:.87s}
+  .top{animation:fade .8s ease both}
+
+  /* rose: ticks light up around the dial, outer ring turns slowly, bug sweeps to heading */
+  #rose .tk{animation:fade .4s ease both}
+  #rose .radial{stroke-dashoffset:200;animation:draw 1.2s var(--ease) both}
+  #rose .ring{transform-origin:0 0;animation:spin 140s linear infinite}
+  #bug{transition:transform 2.2s cubic-bezier(.3,1.25,.4,1)}
+
+  /* scroll reveals (only applied by JS to things below the fold) */
+  .leg{position:relative}
+  .leg::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--magenta);transform:scaleX(0);transform-origin:0 50%;transition:transform 1s var(--ease) .15s}
+  .leg.in::before{transform:scaleX(1)}
+
+  /* hover */
+  .plan,.rating{transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+  .plan:hover,.rating:hover{transform:translateY(-4px);border-color:var(--magenta);box-shadow:0 14px 30px -18px var(--magenta)}
+  .route{background:linear-gradient(var(--magenta),var(--magenta)) 0 100%/0 1.5px no-repeat;transition:background-size .6s var(--ease)}
+  .plan:hover .route{background-size:100% 1.5px}
+  .chip{transition:background .2s,color .2s,border-color .2s,transform .2s}
+  .chip:hover{background:var(--magenta);color:var(--surface);border-color:var(--magenta);transform:translateY(-2px)}
+  .duty .ico{transition:transform .5s var(--ease)}
+  .duty>div:hover .ico{transform:translateY(-4px) rotate(-6deg)}
+  .status.air::before{animation:beacon 1.4s ease-in-out infinite}
+  button{transition:transform .2s,filter .2s}
+  button:active{transform:scale(.96)}
+  .cert{transition:border-style 0s,background .3s}
+  .cert:hover{background:var(--surface)}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease),border-color .35s,box-shadow .35s}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.in:hover{transform:translateY(-4px)}
+  .duty>div.reveal.in:hover,.sec-head.in:hover,.leg.in:hover,.contact.in:hover,.total.in:hover,footer.in:hover{transform:none}
+  /* aircraft crossing the flight-log rule */
+  .log{position:relative}
+  .jet{position:absolute;top:-11px;left:0;width:22px;height:22px;color:var(--magenta);transform:translateX(-30px) rotate(90deg);opacity:0}
+  .log.in .jet{animation:fly 2.6s var(--ease) .1s both}
+}
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes stripIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes beacon{0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1}50%{box-shadow:0 0 0 5px transparent;opacity:.55}}
+@keyframes fly{0%{opacity:0;transform:translateX(-30px) rotate(90deg)}10%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translateX(calc(var(--w,900px) + 10px)) rotate(90deg)}}
+</style>
+</head>
+<body>
+
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="wrap">
+  <header class="top">
+    <span class="label">Amitesh · VOHS</span>
+    <nav aria-label="Sections">
+      <a href="#log">Flight log</a><a href="#ratings">Ratings</a><a href="#plans">Projects</a><a href="#duty">Off duty</a><a href="#contact">Contact</a>
+    </nav>
+    <span class="clock" id="clock">-- : -- Z</span>
+  </header>
+
+  <div class="hero">
+    <div>
+      <span class="label">Hyderabad, India · UTC+5:30</span>
+      <h1><span class="ln"><span>Amitesh</span></span><span class="ln"><span style="color:var(--magenta)">Anirudhan</span></span></h1>
+      <p class="role">Senior Consultant · Oracle ORMB &amp; OUAF · Data engineering</p>
+      <p class="lede">I build and support billing and revenue systems for a national tax authority on Oracle Revenue Management and Billing, and lead a team of five developers doing it. Outside the day job I build data pipelines, analytics dashboards and AI tools, usually with a flight simulator running on the other screen.</p>
+      <div class="strip" role="group" aria-label="Summary">
+        <div><small>Callsign</small><b>AMI29</b></div>
+        <div><small>Base</small><b>Hyderabad</b></div>
+        <div><small>Type</small><b>ORMB / OUAF</b></div>
+        <div><small>Crew</small><b>Lead · 5 devs</b></div>
+        <div><small>Block time</small><b id="stripBlock">—</b></div>
+      </div>
+    </div>
+    <div class="rose" aria-hidden="true"><svg id="rose" viewBox="-200 -200 400 400"></svg></div>
+  </div>
+
+  <section id="log">
+    <div class="sec-head">
+      <h2>Flight log</h2>
+      <p>Career legs, most recent first. Block time is calculated to today.</p>
+    </div>
+    <div class="log">
+      <svg class="jet" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M24 4l3 14 15 8v4l-15-4-1 10 5 4v3l-7-2-7 2v-3l5-4-1-10-15 4v-4l15-8z"/></svg>
+      <article class="leg">
+        <div class="when">MAY 2023<br>— PRESENT</div>
+        <div>
+          <h3>Senior Consultant</h3>
+          <div class="org">RIA Advisory · Hyderabad</div>
+          <ul>
+            <li>Technical lead for a team of five on an ORMB/OUAF implementation for a national tax authority.</li>
+            <li>Delivery and production support across refunds, penalties &amp; interest, audit, tax filing and payment gateway integration.</li>
+            <li>Built a Java account statement service that produces structured XML with tax-type groupings, period subtotals and running balances.</li>
+            <li>Wrote Groovy for bulk customer contact creation and XML builders for taxpayer profile change notifications.</li>
+            <li>Refactored heavy Oracle SQL in ORMB Data Explorer zones with CTEs; debugged Spring Boot and OCI Object Storage integrations.</li>
+          </ul>
+        </div>
+        <div class="block"><span class="label">Block</span><b data-from="2023-05">—</b></div>
+      </article>
+      <article class="leg">
+        <div class="when">MAY 2022<br>— MAY 2023</div>
+        <div>
+          <h3>Scholar Trainee</h3>
+          <div class="org">Wipro</div>
+          <ul>
+            <li>Development on Oracle Customer Care &amp; Billing (CC&amp;B) and CCS, building the OUAF foundation for later ORMB work.</li>
+          </ul>
+        </div>
+        <div class="block"><span class="label">Block</span><b data-from="2022-05" data-to="2023-05">—</b></div>
+      </article>
+      <article class="leg">
+        <div class="when">NOV 2021<br>— FEB 2022</div>
+        <div>
+          <h3>Power BI Developer Intern</h3>
+          <div class="org">Techneith</div>
+          <ul>
+            <li>Built reports and dashboards in Power BI; first step into data and analytics.</li>
+          </ul>
+        </div>
+        <div class="block"><span class="label">Block</span><b data-from="2021-11" data-to="2022-02">—</b></div>
+      </article>
+      <article class="leg">
+        <div class="when">GROUND<br>SCHOOL</div>
+        <div>
+          <h3>B.Sc. Mathematics</h3>
+          <div class="org">Nagpur University · GPA 8.1</div>
+        </div>
+        <div class="block"><span class="label">Origin</span><b>VANP</b></div>
+      </article>
+    </div>
+    <div class="total"><span class="label">Total block time</span><b id="totalBlock">—</b></div>
+  </section>
+
+  <section id="ratings">
+    <div class="sec-head">
+      <h2>Type ratings</h2>
+      <p>What I'm checked out on, grouped by where I use it.</p>
+    </div>
+    <div class="ratings">
+      <div class="rating">
+        <h3>Oracle billing</h3><span class="label">Day job · 3+ years</span>
+        <div class="chips"><span class="chip">ORMB</span><span class="chip">OUAF</span><span class="chip">CC&amp;B</span><span class="chip">Java</span><span class="chip">Groovy</span><span class="chip">Oracle SQL</span><span class="chip">PL/SQL</span><span class="chip">Spring Boot</span><span class="chip">OCI</span><span class="chip">Integrations</span></div>
+      </div>
+      <div class="rating">
+        <h3>Data engineering</h3><span class="label">Pipelines &amp; analytics</span>
+        <div class="chips"><span class="chip">Databricks</span><span class="chip">PySpark</span><span class="chip">dbt</span><span class="chip">Airflow</span><span class="chip">BigQuery</span><span class="chip">PostgreSQL</span><span class="chip">DuckDB</span><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">Power BI</span></div>
+      </div>
+      <div class="rating">
+        <h3>AI &amp; apps</h3><span class="label">Agents &amp; front ends</span>
+        <div class="chips"><span class="chip">CrewAI</span><span class="chip">LangGraph</span><span class="chip">RAG</span><span class="chip">Gemini</span><span class="chip">FastAPI</span><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Mapbox GL</span></div>
+      </div>
+    </div>
+    <div class="cert">
+      <span class="label">Certificate</span>
+      <b>Databricks Certified Data Engineer Associate</b>
+    </div>
+  </section>
+
+  <section id="plans">
+    <div class="sec-head">
+      <h2>Flight plans</h2>
+      <p>Side projects. Each route line is the actual stack, origin to destination.</p>
+    </div>
+    <div class="plans">
+      <article class="plan wide">
+        <div class="plan-top"><span>FPL-01 · Analytics</span><span class="status air">Airborne · in progress</span></div>
+        <div class="plan-body">
+          <h3>VATSIM traffic dashboard</h3>
+          <p>A discovery and analytics dashboard for the VATSIM online flying network, built for curious observers rather than active pilots. Live traffic on a map, busiest airports and routes, and trends over time.</p>
+          <div class="route">PYTHON INGEST DCT POSTGRES/RAILWAY DCT DBT BRONZE.SILVER.GOLD DCT FASTAPI DCT NEXT.JS + MAPBOX GL</div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><span>FPL-02 · Data eng</span><span class="status land">Landed · on GitHub</span></div>
+        <div class="plan-body">
+          <h3>Tax financial analytics pipeline</h3>
+          <p>An end-to-end analytics pipeline modelled on tax authority finance data, from raw files to warehouse marts.</p>
+          <div class="route">DUCKDB DCT POSTGRESQL DCT BIGQUERY VIA DBT CORE, AIRFLOW</div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><span>FPL-03 · Agents</span><span class="status land">Landed · on GitHub</span></div>
+        <div class="plan-body">
+          <h3>AI research assistant</h3>
+          <p>A multi-agent assistant that researches a topic and writes up the findings.</p>
+          <div class="route">CREWAI DCT GOOGLE GEMINI</div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><span>FPL-04 · ML eval</span><span class="status land">Landed</span></div>
+        <div class="plan-body">
+          <h3>YouTube comment classifier</h3>
+          <p>A prompt optimisation pipeline that tracks precision and recall across prompt versions for comment classification.</p>
+          <div class="route">BIGQUERY DCT LLM CLASSIFIER DCT PRECISION/RECALL TRACKING</div>
+        </div>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><span>FPL-05 · RAG</span><span class="status land">Landed</span></div>
+        <div class="plan-body">
+          <h3>RAG on Databricks</h3>
+          <p>A retrieval-augmented question answering system built on the Databricks platform.</p>
+          <div class="route">DATABRICKS DCT VECTOR SEARCH DCT LLM</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="duty">
+    <div class="sec-head">
+      <h2>Off duty</h2>
+      <p>What I do when I'm not on the clock.</p>
+    </div>
+    <div class="duty">
+      <div>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M24 4l3 14 15 8v4l-15-4-1 10 5 4v3l-7-2-7 2v-3l5-4-1-10-15 4v-4l15-8z" stroke-linejoin="round"/></svg>
+        <h3>Flight simulation</h3>
+        <p>Long-time aviation enthusiast on Microsoft Flight Simulator. It's also why my biggest side project is about VATSIM traffic.</p>
+      </div>
+      <div>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c6 6 6 30 0 36M24 6c-6 6-6 30 0 36"/></svg>
+        <h3>Travel</h3>
+        <p>New cities and their airports. Hong Kong has been on the route map.</p>
+      </div>
+      <div>
+        <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 40h36M10 34l9-10 7 6 12-16" stroke-linejoin="round"/><path d="M32 14h6v6"/></svg>
+        <h3>Markets</h3>
+        <p>A disciplined, data-driven investor in Indian markets: stocks, ETFs and steady SIPs.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <div>
+        <span class="label">Contact</span>
+        <h2>Request clearance</h2>
+        <p style="margin:10px 0 0;max-width:52ch">Open to conversations about ORMB/OUAF work, data engineering, and fintech data roles.</p>
+        <div class="freq">
+          <code id="email">amitesh.anirudhan29@gmail.com</code>
+          <button id="copy" type="button">Copy email</button>
+        </div>
+      </div>
+      <div class="ctable">
+        <div>BASE <b>HYDERABAD · VOHS</b></div>
+        <div>LOCAL <b id="ist">--:--</b> IST</div>
+        <div>ZULU <b id="zulu">--:--</b> Z</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© <span id="yr">2026</span> Amitesh Anirudhan</span>
+    <span>Chart not for navigational use</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Compass rose, VOR style
+  var NS="http://www.w3.org/2000/svg", svg=document.getElementById("rose");
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+  var motion=window.matchMedia&&matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  el("circle",{r:178,fill:"none",stroke:"var(--muted)","stroke-width":1,"stroke-dasharray":"2 7",class:"ring",opacity:.6});
+  el("circle",{r:150,fill:"none",stroke:"var(--magenta)","stroke-width":1.5,class:"tk"});
+  el("circle",{r:4,fill:"var(--magenta)"});
+  for(var d=0;d<360;d+=5){
+    var len=d%30===0?18:(d%10===0?12:7), r=150, a=(d-90)*Math.PI/180, delay=(.2+d/360*0.9).toFixed(3)+"s";
+    var ln=el("line",{x1:Math.cos(a)*r,y1:Math.sin(a)*r,x2:Math.cos(a)*(r-len),y2:Math.sin(a)*(r-len),stroke:"var(--magenta)","stroke-width":d%30===0?2:1,class:"tk"});
+    ln.style.animationDelay=delay;
+    if(d%30===0){
+      var t=el("text",{x:0,y:-(r-34),"text-anchor":"middle","dominant-baseline":"middle",fill:"var(--magenta)","font-family":"IBM Plex Mono, monospace","font-size":15,"font-weight":500,transform:"rotate("+d+")",class:"tk"});
+      t.style.animationDelay=delay;
+      t.textContent=d===0?"N":d===90?"E":d===180?"S":d===270?"W":String(d/10).padStart(2,"0");
+    }
+  }
+  // radials to "airports"
+  [[29,"VOHS"],[332,"VANP"],[118,"VHHH"]].forEach(function(p,i){
+    var a=(p[0]-90)*Math.PI/180, dl=(1.2+i*.2)+"s";
+    var l=el("line",{x1:0,y1:0,x2:Math.cos(a)*190,y2:Math.sin(a)*190,stroke:"var(--blue)","stroke-width":1,"stroke-dasharray":"4 4",class:"tk"});
+    var tx=el("text",{x:Math.cos(a)*170+ (Math.cos(a)>0?6:-6),y:Math.sin(a)*170-8,"text-anchor":Math.cos(a)>0?"start":"end",fill:"var(--blue)","font-family":"IBM Plex Mono, monospace","font-size":12,class:"tk"});
+    l.style.animationDelay=dl; tx.style.animationDelay=dl;
+    tx.textContent=p[1];
+  });
+  // heading bug: sweeps in from the west and settles on 029, the radial to VOHS
+  var g=el("g",{id:"bug"});
+  el("path",{d:"M0 -146 L-9 -128 L9 -128 Z",fill:"var(--ink)"},g);
+  el("line",{x1:0,y1:-120,x2:0,y2:0,stroke:"var(--ink)","stroke-width":2},g);
+  if(motion){
+    g.style.transform="rotate(-140deg)";
+    setTimeout(function(){g.style.transform="rotate(29deg)"},700);
+  } else g.style.transform="rotate(29deg)";
+
+  // Block time, counted up when it comes into view
+  var now=new Date(), total=0;
+  function months(from,to){var f=from.split("-").map(Number),t=to?to.split("-").map(Number):[now.getFullYear(),now.getMonth()+1];return (t[0]-f[0])*12+(t[1]-f[1])}
+  function fmt(m){var y=Math.floor(m/12),r=m%12;return (y?y+"y ":"")+r+"m"}
+  function count(node,target,dur){
+    if(!motion){node.textContent=fmt(target);return}
+    var t0=null;
+    function step(ts){t0=t0||ts;var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,3);node.textContent=fmt(Math.round(target*e));if(p<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  }
+  var legs=[];
+  document.querySelectorAll("[data-from]").forEach(function(b){var m=months(b.dataset.from,b.dataset.to);total+=m;b.dataset.m=m;b.textContent=fmt(m);legs.push(b)});
+  document.getElementById("totalBlock").textContent=fmt(total);
+  document.getElementById("totalBlock").dataset.m=total;
+  count(document.getElementById("stripBlock"),total,1400);
+  document.getElementById("yr").textContent=now.getFullYear();
+
+  // Scroll reveals: only for things below the first screen, so the page is complete at rest
+  if(motion&&"IntersectionObserver" in window){
+    var vh=innerHeight;
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var t=e.target; t.classList.add("in"); io.unobserve(t); setTimeout(function(){t.style.transitionDelay=""},1200);
+      if(t.classList.contains("log"))t.style.setProperty("--w",t.offsetWidth+"px");
+      t.querySelectorAll&&t.querySelectorAll("[data-m]").forEach(function(n){count(n,+n.dataset.m,1100)});
+    })},{threshold:.15,rootMargin:"0px 0px -6% 0px"});
+    var sel=".sec-head,.leg,.total,.rating,.cert,.plan,.duty>div,.contact,footer";
+    document.querySelectorAll(sel).forEach(function(n){
+      if(n.getBoundingClientRect().top<vh){n.classList.add("in");return}
+      var sibs=[].filter.call(n.parentNode.children,function(c){return c.matches(sel)});
+      n.style.transitionDelay=(Math.max(0,sibs.indexOf(n))*0.08)+"s";
+      n.classList.add("reveal"); io.observe(n);
+    });
+    io.observe(document.querySelector(".log"));
+  } else {
+    document.querySelectorAll(".leg").forEach(function(n){n.classList.add("in")});
+  }
+
+  // Scroll progress + active section in the nav
+  var bar=document.getElementById("progress"), links={};
+  document.querySelectorAll(".top nav a").forEach(function(a){links[a.getAttribute("href").slice(1)]=a});
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.transform="scaleX("+(h>0?scrollY/h:0)+")";
+    var cur=null;
+    document.querySelectorAll("section[id]").forEach(function(s){if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+    for(var k in links)links[k].classList.toggle("on",k===cur);
+  }
+  addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+  // Clocks
+  function pad(n){return String(n).padStart(2,"0")}
+  function tick(){
+    var d=new Date(), z=pad(d.getUTCHours())+pad(d.getUTCMinutes());
+    var ist=new Date(d.getTime()+330*60000), i=pad(ist.getUTCHours())+":"+pad(ist.getUTCMinutes());
+    document.getElementById("clock").textContent=z+" Z · "+i+" IST";
+    document.getElementById("zulu").textContent=z;
+    document.getElementById("ist").textContent=i;
+  }
+  tick(); setInterval(tick,15000);
+
+  // Copy email
+  var btn=document.getElementById("copy"), em=document.getElementById("email");
+  btn.addEventListener("click",function(){
+    var txt=em.textContent;
+    function done(){btn.textContent="Copied";setTimeout(function(){btn.textContent="Copy email"},1800)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(em);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent="Selected, press Ctrl+C"}
+    try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+  });
+})();
+</script>
+
+</body>
+</html>
