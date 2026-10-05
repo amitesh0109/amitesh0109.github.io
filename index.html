@@ -155,6 +155,12 @@ section{padding-block:56px;border-top:1px solid var(--rule)}
 .azi circle[tabindex]:focus-visible{outline:none;stroke:var(--blue);stroke-width:2}
 .working{font-size:14px;color:var(--muted);border-left:2px solid var(--blue);padding-left:14px;display:grid;gap:8px}
 .working p{margin:0;max-width:62ch}
+.working p b{color:var(--ink);font-weight:600}
+.working details{display:grid;gap:8px}
+.working summary{cursor:pointer;font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--blue);width:max-content}
+.working summary:hover{color:var(--magenta)}
+.working details[open] summary{margin-bottom:8px}
+.working details>*+*{margin-top:8px}
 .working .eq{font:15px/1.5 "STIX Two Text","Cambria Math",Cambria,Georgia,serif;font-style:italic;color:var(--ink);overflow-x:auto;white-space:nowrap}
 @media (max-width:820px){.logbook{grid-template-columns:1fr}}
 /* ATIS band */
@@ -391,7 +397,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
           <h3>B.Sc. Mathematics</h3>
           <div class="org">Nagpur University · GPA 8.1</div>
           <ul>
-            <li>Where the spherical trigonometry behind the Mathy logbook chart comes from.</li>
+            <li>Where the spherical trigonometry behind the Mathy logbook chart comes from: school trigonometry, applied to a round Earth.</li>
           </ul>
         </div>
         <div class="block"><span class="label">Origin</span><b>VANP</b></div>
@@ -537,7 +543,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
     <div class="logbook">
       <div class="azi-wrap">
         <div class="azi" aria-label="Countries visited, plotted by bearing and distance from Hyderabad"><svg id="azi" viewBox="-250 -250 500 500" role="img"></svg></div>
-        <div class="azi-read" id="aziRead" aria-live="polite"><span class="label">Hover or tap a country to see the working</span></div>
+        <div class="azi-read" id="aziRead" aria-live="polite"><span class="label">Hover or tap a country to see how far it is</span></div>
       </div>
       <div>
         <div class="lb-stats">
@@ -552,12 +558,18 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         </div>
         <p class="lb-note">7 countries · Logged with byAir · as of Dec 2025</p>
         <div class="working" style="margin-top:28px">
-          <span class="label">How this is drawn</span>
-          <p>Each point is a country's main airport, placed by its true bearing and distance from Hyderabad (φ₁, λ₁) on a sphere of radius R = 6,371 km:</p>
-          <div class="eq">σ = arccos( sin φ₁ sin φ₂ + cos φ₁ cos φ₂ cos Δλ )</div>
-          <div class="eq">d = R·σ</div>
-          <div class="eq">θ = atan2( sin Δλ cos φ₂ , cos φ₁ sin φ₂ − sin φ₁ cos φ₂ cos Δλ )</div>
-          <p>Then r = d ⁄ 8,000 km × chart radius, and the point sits at (r sin θ, −r cos θ). This is an azimuthal equidistant projection: every distance and direction measured from the centre is true.</p>
+          <span class="label">How to read this chart</span>
+          <p><b>Imagine standing in Hyderabad holding a compass.</b> Each line points the way you'd set off to reach that country by the shortest route, and its length is how far that is. Kenya, for example, is about 5,000 km away, heading west-southwest.</p>
+          <p><b>Why are the lines straight?</b> The Earth is a ball, so the shortest route between two cities looks curved on a flat world map. This chart is drawn from Hyderabad's point of view, which turns every shortest route from home into a straight line.</p>
+          <p><b>The maths, in one sentence:</b> treat the Earth as a ball 6,371 km in radius, use school trigonometry to find the angle between two cities as seen from the Earth's centre, and multiply that angle by the radius to get the distance.</p>
+          <details>
+            <summary>See the formulas</summary>
+            <p>For cities at latitude φ and longitude λ:</p>
+            <div class="eq">σ = arccos( sin φ₁ sin φ₂ + cos φ₁ cos φ₂ cos Δλ )</div>
+            <div class="eq">distance = 6,371 km × σ</div>
+            <div class="eq">direction θ = atan2( sin Δλ cos φ₂ , cos φ₁ sin φ₂ − sin φ₁ cos φ₂ cos Δλ )</div>
+            <p>Each point is then drawn at that direction, at a distance from the centre scaled to the 8,000 km outer ring. Mapmakers call this an azimuthal equidistant projection.</p>
+          </details>
         </div>
       </div>
     </div>
@@ -710,6 +722,8 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
     show(0);restart();
   })();
 
+  function compass16(d){return ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][Math.round(d/22.5)%16]}
+  function flyTime(km){var m=Math.round(km/850*60/10)*10;return "≈ "+Math.floor(m/60)+" h"+(m%60?" "+(m%60)+" min":"")}
   // ---- ATIS "Now" panel: edit these lines, and move the letter on by one each time you change them ----
   var ATIS={letter:"A", updated:"2026-10-05", items:[
     "Building the VATSIM traffic dashboard",
@@ -757,9 +771,10 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
     var city=tz.split("/").pop().replace(/_/g," "), b3=String(Math.round(brg)).padStart(3,"0");
     row.hidden=false; val.textContent="≈ "+km.toLocaleString("en-IN")+" KM · BRG "+b3+"°";
     read.innerHTML='<span class="label">You, near '+city+' (from your time zone)</span>'+
-      '<span><b>≈ '+km.toLocaleString("en-IN")+' km</b><small>to Hyderabad</small></span>'+
-      '<span><b>'+b3+'°</b><small>initial bearing to fly</small></span>'+
-      '<span><small style="margin-top:8px">Hover or tap a country to see its working</small></span>';
+      '<span><b>≈ '+km.toLocaleString("en-IN")+' km</b><small>to Hyderabad, shortest route</small></span>'+
+      '<span><b>'+compass16(brg)+' · '+b3+'°</b><small>compass direction to set off</small></span>'+
+      '<span><b>'+flyTime(km)+'</b><small>nonstop at jet cruising speed</small></span>'+
+      '<span><small style="margin-top:8px">Hover or tap a country to compare</small></span>';
   })();
 
   // ---- A note for anyone reading the console ----
@@ -810,9 +825,9 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
       if(k<0){read.innerHTML=readDefault;return}
       var o=pts[k];
       read.innerHTML='<span class="label">VOHS → '+o.name+'</span>'+
-        '<span><b>'+String(Math.round(o.q.deg)).padStart(3,"0")+'°</b><small>initial bearing θ</small></span>'+
-        '<span><b>'+Math.round(o.q.km).toLocaleString("en-IN")+' km</b><small>great-circle distance d</small></span>'+
-        '<span><b>'+o.q.sigma.toFixed(1)+'°</b><small>central angle σ</small></span>';
+        '<span><b>'+Math.round(o.q.km).toLocaleString("en-IN")+' km</b><small>shortest route over the globe</small></span>'+
+        '<span><b>'+compass16(o.q.deg)+' · '+String(Math.round(o.q.deg)).padStart(3,"0")+'°</b><small>compass direction to set off</small></span>'+
+        '<span><b>'+flyTime(o.q.km)+'</b><small>nonstop at jet cruising speed</small></span>';
     }
     mk("circle",{r:7,fill:"var(--magenta)"});
     var home=mk("text",{x:14,y:30,"text-anchor":"start",class:"ctry"});home.textContent="HYDERABAD · INDIA";
