@@ -505,7 +505,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
       <div>
         <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M24 12c-4-3-10-4-17-3v28c7-1 13 0 17 3 4-3 10-4 17-3V9c-7-1-13 0-17 3z" stroke-linejoin="round"/><path d="M24 12v28"/></svg>
         <h3>Reading</h3>
-        <p>Kurt Vonnegut is my favourite writer: dark humour, short chapters and big ideas said plainly.</p>
+        <p>Kurt Vonnegut is my favourite writer: dark humour, short chapters and big ideas said plainly. Currently reading <i>Player Piano</i>.</p>
       </div>
     </div>
   </section>
@@ -701,9 +701,10 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
   function lightMs(km){return Math.max(1,Math.round(km/299792.458*1000))+" ms"}
   function flyTime(km){var m=Math.round(km/850*60/10)*10;return "≈ "+Math.floor(m/60)+" h"+(m%60?" "+(m%60)+" min":"")}
   // ---- ATIS "Now" panel: edit these lines, and move the letter on by one each time you change them ----
-  var ATIS={letter:"A", updated:"2026-10-05", items:[
+  var ATIS={letter:"C", updated:"2026-10-06", items:[
+    "Supporting large-scale tax infrastructure",
     "Building the VATSIM traffic dashboard",
-    "Reading Kurt Vonnegut"
+    "Reading Player Piano by Kurt Vonnegut"
   ]};
   (function(){
     var P={A:"Alpha",B:"Bravo",C:"Charlie",D:"Delta",E:"Echo",F:"Foxtrot",G:"Golf",H:"Hotel",I:"India",J:"Juliett",K:"Kilo",L:"Lima",M:"Mike",N:"November",O:"Oscar",P:"Papa",Q:"Quebec",R:"Romeo",S:"Sierra",T:"Tango",U:"Uniform",V:"Victor",W:"Whiskey",X:"X-ray",Y:"Yankee",Z:"Zulu"};
