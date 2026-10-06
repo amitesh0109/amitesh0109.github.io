@@ -113,9 +113,10 @@ section{padding-block:56px;border-top:1px solid var(--rule)}
 .cert b{font-family:var(--display);font-size:22px;text-transform:uppercase;font-weight:600}
 
 /* plans */
-.plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}.plans .plan:last-child{grid-column:1/-1}}
 .plan{background:var(--surface);border:1px solid var(--rule);display:flex;flex-direction:column}
-.plan-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--rule);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:12px;white-space:nowrap;padding:10px 16px;border-bottom:1px solid var(--rule);font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .status{display:inline-flex;align-items:center;gap:6px}
 .status::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
 .status.air{color:var(--amber)}
@@ -322,7 +323,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
       <span class="label">Hyderabad, India · UTC+5:30</span>
       <h1><span class="ln"><span>Amitesh</span></span><span class="ln"><span style="color:var(--magenta)">Anirudhan</span></span></h1>
       <p class="role">Senior Consultant · Oracle ORMB &amp; OUAF · Data engineering</p>
-      <p class="lede">I build and support billing and revenue systems for a national tax authority on Oracle Revenue Management and Billing, and lead a team of five developers doing it. Outside the day job I build data pipelines, analytics dashboards and AI tools, usually with a flight simulator running on the other screen.</p>
+      <p class="lede">I build and support billing and revenue systems for a national tax authority on Oracle Revenue Management and Billing, and lead a team of five developers doing it. Outside the day job I build data pipelines and analytics dashboards, usually with a flight simulator running on the other screen.</p>
       <div class="strip" role="group" aria-label="Summary">
         <div><small>Callsign</small><b>AMI29</b></div>
         <div><small>Base</small><b>Hyderabad</b></div>
@@ -369,7 +370,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         </div>
         <div class="block"><span class="label">Block</span><b data-from="2023-05">—</b></div>
       </article>
-      <article class="leg">
+     <article class="leg">
         <div class="when">MAY 2022<br>— MAY 2023</div>
         <div>
           <h3>Scholar Trainee</h3>
@@ -380,7 +381,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         </div>
         <div class="block"><span class="label">Block</span><b data-from="2022-05" data-to="2023-05">—</b></div>
       </article>
-      <article class="leg">
+     <article class="leg">
         <div class="when">NOV 2021<br>— FEB 2022</div>
         <div>
           <h3>Power BI Developer Intern</h3>
@@ -391,7 +392,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         </div>
         <div class="block"><span class="label">Block</span><b data-from="2021-11" data-to="2022-02">—</b></div>
       </article>
-      <article class="leg">
+     <article class="leg">
         <div class="when">GROUND<br>SCHOOL</div>
         <div>
           <h3>B.Sc. Mathematics</h3>
@@ -402,7 +403,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         </div>
         <div class="block"><span class="label">Origin</span><b>VANP</b></div>
       </article>
-    </div>
+   </div>
     <div class="total"><span class="label">Total block time</span><b id="totalBlock">—</b></div>
   </section>
 
@@ -421,8 +422,8 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         <div class="chips"><span class="chip">Databricks</span><span class="chip">PySpark</span><span class="chip">dbt</span><span class="chip">Airflow</span><span class="chip">BigQuery</span><span class="chip">PostgreSQL</span><span class="chip">DuckDB</span><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">Power BI</span></div>
       </div>
       <div class="rating">
-        <h3>AI &amp; apps</h3><span class="label">Agents &amp; front ends</span>
-        <div class="chips"><span class="chip">CrewAI</span><span class="chip">LangGraph</span><span class="chip">RAG</span><span class="chip">Gemini</span><span class="chip">FastAPI</span><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Mapbox GL</span></div>
+        <h3>Web &amp; APIs</h3><span class="label">Serving and showing data</span>
+        <div class="chips"><span class="chip">FastAPI</span><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Mapbox GL</span></div>
       </div>
     </div>
     <div class="cert">
@@ -449,8 +450,8 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
           <div class="route">PYTHON INGEST DCT POSTGRES/RAILWAY DCT DBT BRONZE.SILVER.GOLD DCT FASTAPI DCT NEXT.JS + MAPBOX GL</div>
         </div>
       </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-02 · Streaming</span><span class="status land">Landed · on GitHub</span></div>
+     <article class="plan">
+        <div class="plan-top"><span>FPL-02 · Streaming</span><span class="status land">Landed</span></div>
         <div class="plan-body">
           <h3>Real-time event pipeline</h3>
           <p>A streaming pipeline that ingests e-commerce events, transforms them as they arrive and monitors data quality along the way.</p>
@@ -458,8 +459,8 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
           <div class="plinks"><a href="https://github.com/amitesh0109/realtime-databricks-pipeline" target="_blank" rel="noopener">Code ↗</a></div>
         </div>
       </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-03 · Lakehouse</span><span class="status land">Landed · on GitHub</span></div>
+     <article class="plan">
+        <div class="plan-top"><span>FPL-03 · Lakehouse</span><span class="status land">Landed</span></div>
         <div class="plan-body">
           <h3>Medallion e-commerce pipeline</h3>
           <p>Customer, product and order data refined through bronze, silver and gold layers into business KPIs and a dashboard.</p>
@@ -467,8 +468,8 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
           <div class="plinks"><a href="https://github.com/amitesh0109/databricks-de-project" target="_blank" rel="noopener">Code ↗</a></div>
         </div>
       </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-04 · Data eng</span><span class="status land">Landed · on GitHub</span></div>
+     <article class="plan">
+        <div class="plan-top"><span>FPL-04 · dbt</span><span class="status land">Landed</span></div>
         <div class="plan-body">
           <h3>Tax financial analytics pipeline</h3>
           <p>Turns raw tax transactions into marts for collections, account balances, PAYE compliance and VAT activity, with automated data quality tests.</p>
@@ -476,33 +477,7 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
           <div class="plinks"><a href="https://github.com/amitesh0109/tax-analytics-pipeline" target="_blank" rel="noopener">Code ↗</a></div>
         </div>
       </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-05 · RAG</span><span class="status land">Landed · on GitHub</span></div>
-        <div class="plan-body">
-          <h3>Document Q&amp;A on Databricks</h3>
-          <p>Upload PDFs and ask questions about them. Documents are chunked and embedded through a medallion pipeline, then answered with vector search and an LLM.</p>
-          <div class="route">PDF DCT BRONZE.SILVER.GOLD DCT E5 EMBEDDINGS DCT VECTOR SEARCH DCT LLAMA 4</div>
-          <div class="plinks"><a href="https://github.com/amitesh0109/docai-dbx" target="_blank" rel="noopener">Code ↗</a></div>
-        </div>
-      </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-06 · Agents</span><span class="status land">Landed · on GitHub</span></div>
-        <div class="plan-body">
-          <h3>AI research assistant</h3>
-          <p>A multi-agent assistant that researches a topic and writes up the findings.</p>
-          <div class="route">CREWAI DCT GOOGLE GEMINI</div>
-          <div class="plinks"><a href="https://github.com/amitesh0109/ai-research-assistant" target="_blank" rel="noopener">Code ↗</a></div>
-        </div>
-      </article>
-      <article class="plan">
-        <div class="plan-top"><span>FPL-07 · ML eval</span><span class="status land">Landed</span></div>
-        <div class="plan-body">
-          <h3>YouTube comment classifier</h3>
-          <p>A prompt optimisation pipeline that tracks precision and recall across prompt versions for comment classification.</p>
-          <div class="route">BIGQUERY DCT LLM CLASSIFIER DCT PRECISION/RECALL TRACKING</div>
-        </div>
-      </article>
-    </div>
+      </div>
     <div class="allrepos"><a href="https://github.com/amitesh0109?tab=repositories" target="_blank" rel="noopener">All repositories ↗</a></div>
   </section>
 
@@ -547,9 +522,9 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
       </div>
       <div>
         <div class="lb-stats">
-          <div class="big"><span class="label">Distance flown</span><b><span data-count="60437">60,437</span> km</b><small>About 1.5 times around the Earth</small></div>
+          <div class="big"><span class="label">Distance flown</span><b><span data-count="60437">60,437</span> km</b><small>1.5 laps of the planet, or a sixth of the way to the Moon</small></div>
           <div><span class="label">Flights</span><b data-count="47">47</b><small>Average 1,286 km a sector</small></div>
-          <div><span class="label">Time in the air</span><b>4d 11h</b><small>107 block hours</small></div>
+          <div><span class="label">Time in the air</span><b>4d 11h</b><small>107 hours. The Earth spun 4½ times beneath me.</small></div>
           <div><span class="label">Airports</span><b data-count="16">16</b></div>
           <div><span class="label">Airlines</span><b data-count="12">12</b></div>
         </div>
@@ -559,16 +534,16 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
         <p class="lb-note">7 countries · Logged with byAir · as of Dec 2025</p>
         <div class="working" style="margin-top:28px">
           <span class="label">How to read this chart</span>
-          <p><b>Imagine standing in Hyderabad holding a compass.</b> Each line points the way you'd set off to reach that country by the shortest route, and its length is how far that is. Kenya, for example, is about 5,000 km away, heading west-southwest.</p>
-          <p><b>Why are the lines straight?</b> The Earth is a ball, so the shortest route between two cities looks curved on a flat world map. This chart is drawn from Hyderabad's point of view, which turns every shortest route from home into a straight line.</p>
-          <p><b>The maths, in one sentence:</b> treat the Earth as a ball 6,371 km in radius, use school trigonometry to find the angle between two cities as seen from the Earth's centre, and multiply that angle by the radius to get the distance.</p>
+          <p><b>Stand in Hyderabad holding a compass.</b> Every line points the way you'd set off for that country by the shortest possible route, and its length is the distance. That's the whole chart. Everything else is the universe being round.</p>
+          <p><b>Your world map has been lying to you.</b> On a sphere, the shortest path between two cities is an arc, which a flat map can only draw as a curve. Seen from Hyderabad, though, every shortest path from home is perfectly straight. Perspective is everything.</p>
+          <p><b>For scale:</b> light could cover my entire flying career, all 60,437 km of it, in a fifth of a second. It took me four and a half days. In fairness, light never has to queue for security.</p>
           <details>
-            <summary>See the formulas</summary>
+            <summary>For the curious: the actual maths</summary>
             <p>For cities at latitude φ and longitude λ:</p>
             <div class="eq">σ = arccos( sin φ₁ sin φ₂ + cos φ₁ cos φ₂ cos Δλ )</div>
             <div class="eq">distance = 6,371 km × σ</div>
             <div class="eq">direction θ = atan2( sin Δλ cos φ₂ , cos φ₁ sin φ₂ − sin φ₁ cos φ₂ cos Δλ )</div>
-            <p>Each point is then drawn at that direction, at a distance from the centre scaled to the 8,000 km outer ring. Mapmakers call this an azimuthal equidistant projection.</p>
+            <p>Each point is drawn at that direction, at its distance scaled to the 8,000 km outer ring. Mapmakers call this an azimuthal equidistant projection, which is a long name for "the view from home".</p>
           </details>
         </div>
       </div>
@@ -723,11 +698,11 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
   })();
 
   function compass16(d){return ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][Math.round(d/22.5)%16]}
+  function lightMs(km){return Math.max(1,Math.round(km/299792.458*1000))+" ms"}
   function flyTime(km){var m=Math.round(km/850*60/10)*10;return "≈ "+Math.floor(m/60)+" h"+(m%60?" "+(m%60)+" min":"")}
   // ---- ATIS "Now" panel: edit these lines, and move the letter on by one each time you change them ----
   var ATIS={letter:"A", updated:"2026-10-05", items:[
     "Building the VATSIM traffic dashboard",
-    "Exploring agentic AI with CrewAI and LangGraph",
     "Reading Kurt Vonnegut"
   ]};
   (function(){
@@ -770,10 +745,10 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
     var brg=(Math.atan2(Math.sin(dl)*Math.cos(p2),Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl))/r+360)%360;
     var city=tz.split("/").pop().replace(/_/g," "), b3=String(Math.round(brg)).padStart(3,"0");
     row.hidden=false; val.textContent="≈ "+km.toLocaleString("en-IN")+" KM · BRG "+b3+"°";
-    read.innerHTML='<span class="label">You, near '+city+' (from your time zone)</span>'+
-      '<span><b>≈ '+km.toLocaleString("en-IN")+' km</b><small>to Hyderabad, shortest route</small></span>'+
-      '<span><b>'+compass16(brg)+' · '+b3+'°</b><small>compass direction to set off</small></span>'+
-      '<span><b>'+flyTime(km)+'</b><small>nonstop at jet cruising speed</small></span>'+
+    read.innerHTML='<span class="label">You, near '+city+' (your time zone gave you away)</span>'+
+      '<span><b>≈ '+km.toLocaleString("en-IN")+' km</b><small>between us, as the crow should fly</small></span>'+
+      '<span><b>'+compass16(brg)+' · '+b3+'°</b><small>which way to point the nose</small></span>'+
+      '<span><b>'+flyTime(km)+'</b><small>by jet. Light does it in '+lightMs(km)+'</small></span>'+
       '<span><small style="margin-top:8px">Hover or tap a country to compare</small></span>';
   })();
 
@@ -825,9 +800,9 @@ footer{padding-top:28px;border-top:1px solid var(--rule);font:12px var(--mono);c
       if(k<0){read.innerHTML=readDefault;return}
       var o=pts[k];
       read.innerHTML='<span class="label">VOHS → '+o.name+'</span>'+
-        '<span><b>'+Math.round(o.q.km).toLocaleString("en-IN")+' km</b><small>shortest route over the globe</small></span>'+
-        '<span><b>'+compass16(o.q.deg)+' · '+String(Math.round(o.q.deg)).padStart(3,"0")+'°</b><small>compass direction to set off</small></span>'+
-        '<span><b>'+flyTime(o.q.km)+'</b><small>nonstop at jet cruising speed</small></span>';
+        '<span><b>'+Math.round(o.q.km).toLocaleString("en-IN")+' km</b><small>shortest path across a curved planet</small></span>'+
+        '<span><b>'+compass16(o.q.deg)+' · '+String(Math.round(o.q.deg)).padStart(3,"0")+'°</b><small>which way to point the nose</small></span>'+
+        '<span><b>'+flyTime(o.q.km)+'</b><small>by jet. Light does it in '+lightMs(o.q.km)+'</small></span>';
     }
     mk("circle",{r:7,fill:"var(--magenta)"});
     var home=mk("text",{x:14,y:30,"text-anchor":"start",class:"ctry"});home.textContent="HYDERABAD · INDIA";
